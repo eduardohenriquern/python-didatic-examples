@@ -4,7 +4,7 @@
 #   transações
 # 2. Usar Herança e dividir uma conta corrente de uma conta salário
 
-class Conta:
+class ContaBancaria:
 
     def __init__(self, numero, titular, saldo):
         self.numero = numero
@@ -28,21 +28,20 @@ class Conta:
         else:
             print('Saldo insuficiente!')
 
+    def creditar(self, quantia):
+        self.saldo += quantia
 
     def transferir(self, destinatario, quantia):
         # Verifica se ele é um empregador e está transferindo para uma conta salário
         # Se for retornado True, ele é empregador, se for retornado False, não é empregador
         # e a conta é uma conta corrente
-        if self.isEmpregador(destinatario):
+        if self.isEmpregador(destinatario) or hasattr(destinatario, 'historico'):
             destinatario.depositar(quantia)
             self.debitar(quantia)
             print('Transferência de R$ '+ str(quantia) +' realizada para '+ destinatario.titular)
             self.ver_saldo()
         else:
             print('Você não pode transferir para uma conta salário. Ou a conta de destino não é conta corrente!')
-
-    def creditar(self, quantia):
-        self.saldo += quantia
 
     # Verifica se a conta de destino da transferência é conta salários
     # e se o titular da conta que está fazendo a transferência é um empregador
